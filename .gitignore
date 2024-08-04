@@ -107,6 +107,7 @@ venv.bak/
 
 # extras
 media/
+products/migrations/
 
 # Spyder project settings
 .spyderproject
