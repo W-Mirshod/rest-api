@@ -108,7 +108,7 @@ venv.bak/
 # extras
 media/
 products/migrations/*
-!products/migrations/.gitkeep
+!products/migrations/__init__.py
 
 
 # Spyder project settings
