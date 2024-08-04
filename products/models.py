@@ -14,12 +14,23 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     title = models.CharField(max_length=70)
-    slug = models.SlugField(unique=True)
-    image = models.ImageField(upload_to='images/category/')
+    slug = models.SlugField(unique=True, blank=True)
+    image = models.ImageField(upload_to='media/images/category/')
+
+    objects = models.Manager()
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+
+        if self.slug:
+            i = 1
+            while True:
+                new_slug = f"{slugify(self.title)}-{i}"
+                if not Category.objects.filter(slug=new_slug).exists():
+                    self.slug = new_slug
+                    break
+                i += 1
 
         super(Category, self).save(*args, **kwargs)
 
@@ -32,25 +43,38 @@ class Category(BaseModel):
 
 class Group(BaseModel):
     title = models.CharField(max_length=90)
-    slug = models.SlugField(unique=True)
-    image = models.ImageField(upload_to='images/group/')
+    slug = models.SlugField(unique=True, blank=True)
+    image = models.ImageField(upload_to='media/images/group/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    objects = models.Manager()
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+
+        if self.slug:
+            i = 1
+            while True:
+                new_slug = f"{slugify(self.title)}-{i}"
+                if not Group.objects.filter(slug=new_slug).exists():
+                    self.slug = new_slug
+                    break
+                i += 1
 
         super(Group, self).save(*args, **kwargs)
 
 
 class Product(BaseModel):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     discount = models.IntegerField(default=0)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     is_liked = models.ManyToManyField(User, related_name='liked_products', blank=True)
+
+    objects = models.Manager()
 
     @property
     def discounted_price(self) -> Any:
@@ -62,6 +86,15 @@ class Product(BaseModel):
         if not self.slug:
             self.slug = slugify(self.name)
 
+        if self.slug:
+            i = 1
+            while True:
+                new_slug = f"{slugify(self.name)}-{i}"
+                if not Product.objects.filter(slug=new_slug).exists():
+                    self.slug = new_slug
+                    break
+                i += 1
+
         super(Product, self).save(*args, **kwargs)
 
     class Meta:
@@ -69,7 +102,7 @@ class Product(BaseModel):
 
 
 class Image(BaseModel):
-    image = models.ImageField(upload_to='images/products/')
+    image = models.ImageField(upload_to='media/images/products/')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     is_primary = models.BooleanField(default=False)
 
