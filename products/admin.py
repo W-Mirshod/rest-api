@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Product, Category, Group
+from products.models import Product, Category, Group, Comment, Image
 
 
 @admin.register(Category)
@@ -25,3 +25,13 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'discount', 'created_at')
     search_fields = ('name', 'slug',)
     list_filter = ('price', 'created_at')
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('message', 'rating', 'created_at')
+    search_fields = ('message',)
+    list_filter = ('rating', 'created_at')
+
+
+admin.site.register(Image)
