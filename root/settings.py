@@ -58,7 +58,7 @@ ROOT_URLCONF = 'root.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,7 +139,7 @@ JAZZMIN_SETTINGS = {
 
     # Top Menu #
     'topmenu_links': [
-        {'name': 'Home', 'url': 'http://127.0.0.1:8000/courses/home/', 'permissions': ['auth.view_user']},
+        {'name': 'Home', 'url': 'http://127.0.0.1:8000/', 'permissions': ['auth.view_user']},
         {'name': 'Support', 'url': 'https://support.example.com', 'new_window': True},
     ],
 
