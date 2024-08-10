@@ -1,6 +1,6 @@
 from django.urls import path
 from products.views.group import GroupList, GroupDetail
-from products.views.product import ProductList, ProductDetail
+from products.views.product import ProductList, ProductDetail, ProductAttribute, ProductsAttribute
 from products.views.category import CategoryList, CategoryDetail
 
 urlpatterns = [
@@ -15,4 +15,6 @@ urlpatterns = [
     # product
     path('categories/<slug:category_slug>/<slug:group_slug>/', ProductList.as_view()),
     path('categories/<slug:category_slug>/<slug:group_slug>/<slug:product_slug>/', ProductDetail.as_view()),
+    path('categories/<slug:category_slug>/<slug:group_slug>/<slug:product_slug>/attribute/', ProductAttribute.as_view()),
+    path('categories/<slug:category_slug>/<slug:group_slug>/products/attributes/', ProductsAttribute.as_view()),
 ]

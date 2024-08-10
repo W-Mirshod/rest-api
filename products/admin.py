@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from products.models import Product, Category, Group, Comment, Image
+from products.models import Product, Category, Group, Comment, Image, Attribute, Key, Value
 
 
 @admin.register(Category)
@@ -35,3 +35,6 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Image)
+admin.site.register(Key)
+admin.site.register(Value)
+admin.site.register(Attribute)
