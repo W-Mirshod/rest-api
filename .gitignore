@@ -110,6 +110,7 @@ media/
 products/migrations/*
 !products/migrations/__init__.py
 !templates/
+cache/
 
 # Spyder project settings
 .spyderproject
