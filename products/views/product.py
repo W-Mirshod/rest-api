@@ -68,24 +68,27 @@ class ProductAttribute(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class LoginView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
-
+class LoginView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        print(f"User: {user.username}, Token: {token.key}")
-
-        response_data = {
-            'success': True,
-            'username': user.username,
-            'email': user.email,
-            'token': token.key
-        }
-
-        return Response(response_data, status=status.HTTP_200_OK)
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            response = {
+                "username": {
+                    "about": "Not Exist"
+                }
+            }
+            if User.objects.filter(username=request.data['username']).exists():
+                user = User.objects.get(username=request.data['username'])
+                token, created = Token.objects.get_or_create(user=user)
+                response = {
+                    'success': True,
+                    'username': user.username,
+                    'email': user.email,
+                    'token': token.key
+                }
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogOutView(APIView):
@@ -107,8 +110,12 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+
             return Response({
                 "user": RegisterSerializer(user).data,
+                "token": token.key,
                 "message": "User created successfully."
             }, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
