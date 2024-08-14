@@ -1,4 +1,5 @@
 from django.contrib import admin
+from rest_framework.authtoken.models import Token
 
 from products.models import Product, Category, Group, Comment, Image, Attribute, Key, Value
 
