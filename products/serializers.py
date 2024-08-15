@@ -1,11 +1,8 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password
 from django.db.models import Avg
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-
+from django.contrib.auth.models import User
 from products.models import Category, Group, Product, Attribute
+from django.contrib.auth.password_validation import validate_password
 
 
 class CategorySerializer(serializers.ModelSerializer):
