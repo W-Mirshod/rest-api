@@ -180,7 +180,6 @@ JAZZMIN_SETTINGS = {
     'site_title': 'Online Course',
     'site_header': 'E-Platform',
     'site_brand': 'E-Courses',
-    'site_logo': 'admin.ico',
     'welcome_sign': 'Welcome to the Admin Area',
     'copyright': 'Najot Ta\'lim',
     'search_model': 'auth.User',
