@@ -20,15 +20,16 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView, TokenBlacklistView
 from root.tokens import MyTokenObtainPairView, LogoutView
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('products.urls')),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-token-auth/', tokens.CustomTokenAuth.as_view()),
-    path('api/token/', MyTokenObtainPairView.as_view()),
-    path('api/token/refresh/', TokenRefreshView.as_view()),
-    path('api/token/verify/', TokenVerifyView.as_view()),
-    path('api/token/blacklist/', TokenBlacklistView.as_view()),
-    path('api-logout/', LogoutView.as_view()),
-]
+                  path('admin/', admin.site.urls),
+                  path('', include('products.urls')),
+                  path('api-auth/', include('rest_framework.urls')),
+                  path('api-token-auth/', tokens.CustomTokenAuth.as_view()),
+                  path('api/token/', MyTokenObtainPairView.as_view()),
+                  path('api/token/refresh/', TokenRefreshView.as_view()),
+                  path('api/token/verify/', TokenVerifyView.as_view()),
+                  path('api/token/blacklist/', TokenBlacklistView.as_view()),
+                  path('api-logout/', LogoutView.as_view()),
+              ] + debug_toolbar_urls()

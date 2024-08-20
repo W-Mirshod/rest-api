@@ -13,7 +13,10 @@ from root.permissions import CustomPermissions
 
 class ProductList(APIView):
     def get(self, request, category_slug, group_slug):
-        products = Product.objects.filter(group__category__slug=category_slug, group__slug=group_slug)
+        products = Product.objects.select_related('group__category').filter(
+            group__category__slug=category_slug,
+            group__slug=group_slug
+        )
         serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -59,7 +62,10 @@ class ProductDetail(APIView):
 
 class ProductsAttribute(APIView):
     def get(self, request, category_slug, group_slug):
-        products = Product.objects.filter(group__category__slug=category_slug, group__slug=group_slug)
+        products = Product.objects.select_related('group__category').filter(
+            group__category__slug=category_slug,
+            group__slug=group_slug
+        )
         serializer = AttributeSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -31,6 +31,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+INTERNAL_IPS = ('127.0.0.1', '192.168.0.1',)
+DEBUG_TOOLBAR_CONFIG = {'INTERCEPT_REDIRECTS': False, }
+
+
+def show_toolbar(request):
+    return True
+
+
+SHOW_TOOLBAR_CALLBACK = show_toolbar
+
 # Application definition
 INSTALLED_APPS = [
     'jazzmin',
@@ -46,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'root.urls'
