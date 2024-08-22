@@ -140,6 +140,7 @@ class LogOutView(APIView):
             token = Token.objects.get(user=request.user)
             token.delete()
             return Response({"success": True}, status=status.HTTP_204_NO_CONTENT)
+
         except Token.DoesNotExist:
             return Response({"error": "Token not found."}, status=status.HTTP_400_BAD_REQUEST)
 
