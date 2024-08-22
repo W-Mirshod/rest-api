@@ -43,7 +43,7 @@ class ProductDetail(APIView):
             serializer = ProductDetailSerializer(product)
             product_data = serializer.data
             cache.set(cache_key, product_data, 900)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
         return Response(product_data, status=status.HTTP_200_OK)
 
     def post(self, request, category_slug, group_slug, product_slug):
