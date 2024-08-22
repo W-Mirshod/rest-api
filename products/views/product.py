@@ -35,9 +35,16 @@ class ProductDetail(APIView):
     permission_classes = (CustomPermissions,)
 
     def get(self, request, category_slug, group_slug, product_slug):
-        product = get_object_or_404(Product, slug=product_slug)
-        serializer = ProductDetailSerializer(product)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        cache_key = f'product_detail_{product_slug}'
+        product_data = cache.get(cache_key)
+
+        if not product_data:
+            product = get_object_or_404(Product, slug=product_slug)
+            serializer = ProductDetailSerializer(product)
+            product_data = serializer.data
+            cache.set(cache_key, product_data, 900)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(product_data, status=status.HTTP_200_OK)
 
     def post(self, request, category_slug, group_slug, product_slug):
         product = Product.objects.get(slug=product_slug)
