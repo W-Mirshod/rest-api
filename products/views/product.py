@@ -15,7 +15,6 @@ from root.permissions import CustomPermissions
 
 
 class ProductList(APIView):
-    # @method_decorator(cache_page(60 * 5))
     def get(self, request, category_slug, group_slug):
         cache_key = f'product_list_{category_slug}_{group_slug}'
         product_data = cache.get(cache_key)

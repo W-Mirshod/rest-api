@@ -23,7 +23,7 @@ class GroupAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     exclude = ('slug',)
-    list_display = ('name', 'slug', 'price', 'discount', 'created_at')
+    list_display = ('name', 'slug', 'price', 'group', 'discount', 'created_at')
     search_fields = ('name', 'slug',)
     list_filter = ('price', 'created_at')
 
