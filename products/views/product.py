@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import status, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
@@ -12,13 +15,20 @@ from root.permissions import CustomPermissions
 
 
 class ProductList(APIView):
+    # @method_decorator(cache_page(60 * 5))
     def get(self, request, category_slug, group_slug):
-        products = Product.objects.select_related('group__category').filter(
-            group__category__slug=category_slug,
-            group__slug=group_slug
-        )
-        serializer = ProductSerializer(products, many=True, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        cache_key = f'product_list_{category_slug}_{group_slug}'
+        product_data = cache.get(cache_key)
+
+        if not product_data:
+            products = Product.objects.select_related('group__category').filter(
+                group__category__slug=category_slug,
+                group__slug=group_slug
+            )
+            serializer = ProductSerializer(products, many=True, context={'request': request})
+            product_data = serializer.data
+            cache.set(cache_key, product_data, 900)
+        return Response(product_data, status=status.HTTP_200_OK)
 
 
 class ProductDetail(APIView):
